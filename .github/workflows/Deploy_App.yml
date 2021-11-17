@@ -1,6 +1,6 @@
-name: Deploy App
-author: TIBCO Software
-description: Workflow to deploy the App in all environment.
+name: 'Deploy App'
+author: 'TIBCO Software'
+description: 'Workflow to deploy the App in all environment.'
   
 on:
   workflow_dispatch:
