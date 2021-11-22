@@ -26,7 +26,7 @@ jobs:
         id: variables
         uses: ./.github/actions/setvars
         with:
-          path: ./.github/variables/application.env
+          path: ./.github/variables
       - name: Print
         run: |
           echo "Variable 1: ${{ env.APPLICATION }}"
