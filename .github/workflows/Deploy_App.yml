@@ -20,6 +20,8 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     steps:
+      - name: Ccheckout
+        uses: actions/checkout@v2
       - name: Create variables JSON
         id: variables
         uses: ./.github/actions/setvars
