@@ -37,8 +37,8 @@ jobs:
     steps:
       - name: SonarQube Code Analysis
         run : |
-          echo "Variable 1: ${{ env.APPLICATION }}"
-          echo "Variable 2: ${{ env.ENVIRONMENT }}"          
+          echo "Variable 1: ${{ env.application }}"
+          echo "Variable 2: ${{ env.environment }}"          
       - name: maven build
         run : |
           echo $OC_SERVER
