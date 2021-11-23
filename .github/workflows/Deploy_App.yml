@@ -33,11 +33,11 @@ jobs:
         run: |
           if [ ${{ github.event.inputs.environment }} = "dev" ] || [ ${{ github.event.inputs.environment }} = "sit" ] || [ ${{ github.event.inputs.environment }} = "uat" ] || [ ${{ github.event.inputs.environment }} = "prod" ]
           then
-            echo "You are deploying to : ${{ github.event.inputs.environment }}"
+          echo "You are deploying to : ${{ github.event.inputs.environment }}"
           else
-            echo "You have enetered incorrect environment : ${{ github.event.inputs.environment }}"
-            echo "Please provide the correct environment to deploy : dev|sit|uat|prod"
-            exit 1
+          echo "You have enetered incorrect environment : ${{ github.event.inputs.environment }}"
+          echo "Please provide the correct environment to deploy : dev|sit|uat|prod"
+          exit 1
           fi
   build:
     runs-on: ubuntu-latest
