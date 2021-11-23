@@ -58,44 +58,14 @@ jobs:
           OC_SERVER: ${{ secrets.OC_SERVER }}
           SONAR_SERVER: ${{ secrets.SONAR_SERVER }}
 
-  deploy-dev:
+  deploy:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ github.event.inputs.environment }}
     needs: [build]
-    if: ${{ github.event.inputs.environment == 'dev' }}
     steps:
-      - name : deploy to dev
+      - name : deploy
         run: |
           echo $OC_PROJECT       
-          echo "Deploy to dev completed"
+          echo "Deploy to ${{ github.event.inputs.environment }} completed"
         env:
           OC_PROJECT: ${{ secrets.OC_PROJECT }}
-
-  deploy-sit:
-    runs-on: ubuntu-latest
-    environment: sit
-    needs: [build]
-    if: ${{ github.event.inputs.environment == 'sit' }}
-    steps:
-      - name : deploy to sit
-        run: echo "Deploy to sit completed"
-        
-  deploy-uat:
-    runs-on: ubuntu-latest
-    environment: uat
-    needs: [build]
-    if: ${{ github.event.inputs.environment == 'uat' }}
-    steps:
-      - name : deploy to uat
-        run: echo "Deploy to uat completed"
-        
-  deploy-prod:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.environment == 'prod' }}
-    environment: production
-    needs: [build]
-    steps:
-      - name : deploy to prod
-        run: echo "Deploy to prod completed"
-      - name : Create release
-        run: echo "Deploy to prod completed"
