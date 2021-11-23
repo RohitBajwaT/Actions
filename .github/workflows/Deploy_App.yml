@@ -30,7 +30,7 @@ jobs:
         with:
           path: ./.github/variables/application.env
       - name: validate
-        if: ${{ github.event.inputs.environment != 'dev' || github.event.inputs.environment != 'sit' || github.event.inputs.environment != 'uat' || github.event.inputs.environment != 'prod' }}
+        if: github.event.inputs.environment != 'dev' || github.event.inputs.environment != 'sit' || github.event.inputs.environment != 'uat' || github.event.inputs.environment != 'prod'
         run: |
           echo "You have enetered incorrect environment : ${{ github.event.inputs.environment }}"
           echo "Please provide the correct environment to deploy : dev|sit|uat|prod"
