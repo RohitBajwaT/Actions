@@ -19,6 +19,8 @@ env:
 jobs:
   set-variables:
     runs-on: ubuntu-latest
+    outputs:
+      vars: ${{ steps.variables.outputs.env }}
     steps:
       - name: Ccheckout
         uses: actions/checkout@v2
@@ -26,15 +28,12 @@ jobs:
         id: variables
         uses: ./.github/actions/setvars
         with:
-          path: ./.github/variables/App.env
-      - name: Print
-        run: |
-          echo "Variable 1: ${{ steps.variables.outputs.APPLICATION }}"
-          echo "Variable 2: ${{ steps.variables.outputs.ENVIRONMENT }}"
+          path: ./.github/variables/application.env
 
   build:
     runs-on: ubuntu-latest
     needs: [set-variables]
+    env: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
       - name: SonarQube Code Analysis
         run : |
