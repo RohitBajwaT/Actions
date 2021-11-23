@@ -22,7 +22,12 @@ jobs:
     outputs:
       vars: ${{ steps.variables.outputs.env }}
     steps:
-      - name: Ccheckout
+      - name: validate
+        if: ${{ github.event.inputs.environment != 'dev' || github.event.inputs.environment != 'sit' || github.event.inputs.environment != 'uat' || github.event.inputs.environment != 'prod' }}
+        run: |
+          echo "Please provide the correct environment to deploy : dev|sit|uat|prod"
+          exit 1
+      - name: Checkout
         uses: actions/checkout@v2
       - name: read env
         id: variables
@@ -38,7 +43,8 @@ jobs:
       - name: SonarQube Code Analysis
         run : |
           echo "Variable 1: ${{ env.application }}"
-          echo "Variable 2: ${{ env.environment }}"          
+          echo "Variable 2: ${{ env.environment }}" 
+          echo "Completed the sonarqube analysis"
       - name: maven build
         run : |
           echo $OC_SERVER
