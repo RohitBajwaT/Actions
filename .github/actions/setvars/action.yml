@@ -1,0 +1,14 @@
+name: 'Set Environment Variables'
+description: 'Load Environment variables from .env file'
+
+inputs:
+  path: 
+    description: 'the path to the .env file (including file name)'
+    required: true
+    default: './.github/variables/application.env'
+outputs:
+  env: 
+    description: 'output in json format, Enable ACTIONS_STEP_DEBUG to true to log the env variables'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

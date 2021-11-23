@@ -1,25 +1,54 @@
-name: Deploy App
-author: TIBCO Software
-description: Workflow to deploy the App in all environment.
+name: 'Deploy App'
+#description: 'Workflow to deploy the App in all environment.'
+#author: 'TIBCO Software'
   
-on : [workflow_dispatch]
-  inputs:
-    environment:
-      description: 'Environment to deploy'
-      required: true
-      default: 'dev/sit/uat/prod'
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev|sit|uat|prod'
 #outputs:
 #  time:
- #   description: 'the greeting time'
+#   description: 'the greeting time'
          
 env:
   WF_ENV: workflow env variable
   
-
 jobs:
+  set-variables:
+    runs-on: ubuntu-latest
+    outputs:
+      vars: ${{ steps.variables.outputs.env }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: read env
+        id: variables
+        uses: ./.github/actions/setvars
+        with:
+          path: ./.github/variables/application.env
+      - name: validate
+        run: |
+          if [ ${{ github.event.inputs.environment }} = "dev" ] || [ ${{ github.event.inputs.environment }} = "sit" ] || [ ${{ github.event.inputs.environment }} = "uat" ] || [ ${{ github.event.inputs.environment }} = "prod" ]
+          then
+          echo "You are deploying to : ${{ github.event.inputs.environment }}"
+          else
+          echo "You have enetered incorrect environment : ${{ github.event.inputs.environment }}"
+          echo "Please provide the correct environment to deploy : dev|sit|uat|prod"
+          exit 1
+          fi
   build:
     runs-on: ubuntu-latest
+    needs: [set-variables]
+    env: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
+      - name: SonarQube Code Analysis
+        run : |
+          echo "Variable 1: ${{ env.application }}"
+          echo "Variable 2: ${{ env.environment }}" 
+          echo "Completed the sonarqube analysis"
       - name: maven build
         run : |
           echo $OC_SERVER
@@ -29,51 +58,14 @@ jobs:
           OC_SERVER: ${{ secrets.OC_SERVER }}
           SONAR_SERVER: ${{ secrets.SONAR_SERVER }}
 
-  code-analysis:
+  deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     needs: [build]
     steps:
-      - name : Sonar Analysis
-        run: echo "Code Analysis completed"
-
-  deploy-dev:
-    runs-on: ubuntu-latest
-    environment: dev
-    needs: [code-analysis]
-    if: ${{ github.event.inputs.environment == 'dev' }}
-    steps:
-      - name : deploy to dev
+      - name : deploy
         run: |
           echo $OC_PROJECT       
-          echo "Deploy to dev completed"
+          echo "Deploy to ${{ github.event.inputs.environment }} completed"
         env:
           OC_PROJECT: ${{ secrets.OC_PROJECT }}
-
-  deploy-sit:
-    runs-on: ubuntu-latest
-    environment: sit
-    needs: [code-analysis]
-    if: ${{ github.event.inputs.environment == 'sit' }}
-    steps:
-      - name : deploy to sit
-        run: echo "Deploy to sit completed"
-        
-  deploy-uat:
-    runs-on: ubuntu-latest
-    environment: uat
-    needs: [code-analysis]
-    if: ${{ github.event.inputs.environment == 'uat' }}
-    steps:
-      - name : deploy to uat
-        run: echo "Deploy to uat completed"
-        
-  deploy-prod:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.environment == 'prod' }}
-    environment: production
-    needs: [code-analysis]
-    steps:
-      - name : deploy to prod
-        run: echo "Deploy to prod completed"
-      - name : Create release
-        run: echo "Deploy to prod completed"
