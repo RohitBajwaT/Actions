@@ -22,15 +22,15 @@ jobs:
     steps:
       - name: Ccheckout
         uses: actions/checkout@v2
-      - name: Create variables JSON
+      - name: read env
         id: variables
         uses: ./.github/actions/setvars
         with:
           path: ./.github/variables
       - name: Print
         run: |
-          echo "Variable 1: ${{ env.APPLICATION }}"
-          echo "Variable 2: ${{ env.ENVIRONMENT }}"
+          echo "Variable 1: ${{ steps.variables.outputs.APPLICATION }}"
+          echo "Variable 2: ${{ steps.variables.outputs.ENVIRONMENT }}"
 
   build:
     runs-on: ubuntu-latest
