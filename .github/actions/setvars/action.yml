@@ -8,7 +8,7 @@ inputs:
     default: './.github/variables/application.env'
 outputs:
   env: 
-    description: 'output in json format, Enable ACTIONS_STEP_DEBUG to true to log the env variables'
+    description: 'output in json format, Enable secret ACTIONS_STEP_DEBUG to true to log the env variables'
 runs:
   using: 'node12'
   main: 'dist/index.js'
