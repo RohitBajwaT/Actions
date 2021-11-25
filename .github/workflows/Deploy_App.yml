@@ -51,6 +51,7 @@ jobs:
           repository: RohitBajwaT/common
           ref: v1.0
           path: ./Common
+          token: ${{ secrets.TOK }}
       - name: SonarQube Code Analysis
         run : |
           pwd
