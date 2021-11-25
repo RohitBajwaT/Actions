@@ -45,8 +45,16 @@ jobs:
     needs: [set-variables]
     env: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
+      - name: Checkout Common
+        uses: actions/checkout@v2
+        with:
+          repository: RohitBajwaT/common
+          ref: v1.0
+          path: ./Common
       - name: SonarQube Code Analysis
         run : |
+          pwd
+          ls -ltr
           echo "Variable 1: ${{ env.application }}"
           echo "Variable 2: ${{ env.environment }}" 
           echo "Completed the sonarqube analysis"
@@ -65,6 +73,7 @@ jobs:
     needs: [set-variables, build]
     env: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
+
       - name : deploy
         run: |
           echo $OC_PROJECT 
