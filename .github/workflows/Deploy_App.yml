@@ -50,12 +50,17 @@ jobs:
         with:
           repository: RohitBajwaT/common
           ref: v1.0
-          path: ./Common
+          path: ./../../Common
           token: ${{ secrets.TOK }}
       - name: SonarQube Code Analysis
         run : |
           pwd
-          ls -ltr
+          cd /home/runner/work
+          ls -al
+          cd /home/runner/work/Actions_Test
+          ls -al
+          cd /home/runner/work/Actions_Test/Actions_Test
+          ls -al
           echo "Variable 1: ${{ env.application }}"
           echo "Variable 2: ${{ env.environment }}" 
           echo "Completed the sonarqube analysis"
