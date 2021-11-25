@@ -62,7 +62,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment }}
-    needs: [build]
+    needs: [set-variables, build]
+    env: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
       - name : deploy
         run: |
