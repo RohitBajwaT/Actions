@@ -19,6 +19,7 @@ env:
 jobs:
   set-variables:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
     outputs:
       vars: ${{ steps.variables.outputs.env }}
     steps:
