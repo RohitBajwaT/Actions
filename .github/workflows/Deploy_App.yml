@@ -70,7 +70,7 @@ jobs:
     needs: [set-variables]
     env: 
       vars: ${{ needs.set-variables.outputs.vars }}
-      project: ${{ steps.envvariables.outputs.project }}
+      project: ${{ needs.set-variables.outputs.project }}
     steps:
       - name: Checkout Common
         uses: actions/checkout@v2
