@@ -66,13 +66,13 @@ jobs:
           echo "Completed the sonarqube analysis"
       - name: maven build
         run : |
-          echo ${{ env[project_$SUB] }}
+          echo ${{ env[SUB] }}
           echo $SONAR_SERVER
           echo "Build completed"        
         env:
           OC_SERVER: ${{ secrets.OC_SERVER }}
           SONAR_SERVER: ${{ secrets.SONAR_SERVER }}
-          SUB: ${{ github.event.inputs.environment }}
+          SUB: PROJECT_DEV
 
   deploy:
     runs-on: ubuntu-latest
