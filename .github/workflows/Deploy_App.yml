@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [set-variables]
     env: 
-      vars: ${{ needs.set-variables.outputs.vars }}
+      vars: ${{ fromJSON(needs.set-variables.outputs.vars) }}
     steps:
       - name: Checkout Common
         uses: actions/checkout@v2
@@ -55,8 +55,8 @@ jobs:
           token: ${{ secrets.TOK }}
       - name: SonarQube Code Analysis
         run : |
-          echo "Variable 1: ${{ fromJSON(env.vars).application }}"
-          echo "Variable 2: ${{ fromJSON(env.vars).environment }}" 
+          echo "Variable 1: ${{ env.vars.application }}"
+          echo "Variable 2: ${{ env.vars.environment }}" 
           echo "Completed the sonarqube analysis"
       - name: maven build
         run : |
