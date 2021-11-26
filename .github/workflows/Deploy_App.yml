@@ -22,6 +22,7 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     outputs:
       vars: ${{ steps.variables.outputs.env }}
+      project: ${{ steps.envvariables.outputs.project }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,11 +42,27 @@ jobs:
           exit 1
           fi
       - name: set env specific variables
+        id: envvariables
         run: |
-          echo "project=devproject" >> $GITHUB_ENV
-      - name: set env specific variables
+          if [ "${{ github.event.inputs.environment }}" = "prod" ]
+          then
+             echo "::set-output name=project::${{ fromJSON(steps.variables.outputs.env).project_prod }}"
+          elif [ "${{ github.event.inputs.environment }}" = "uat" ]
+          then
+             echo "::set-output name=project::${{ fromJSON(steps.variables.outputs.env).project_uat }}"
+          elif [ "${{ github.event.inputs.environment }}" = "sit" ]
+          then
+             echo "::set-output name=project::${{ fromJSON(steps.variables.outputs.env).project_sit }}"
+          elif [ "${{ github.event.inputs.environment }}" = "dev" ]
+          then
+             echo "::set-output name=project::${{ fromJSON(steps.variables.outputs.env).project_dev }}"
+          else
+             echo "Environment specific variables could not be set!"
+             exit 1
+          fi  
+      - name: get env specific variables
         run: |
-          echo "${{ env.project }}"
+          echo "${{ steps.envvariables.outputs.project }}"
 
       
   build:
@@ -53,6 +70,7 @@ jobs:
     needs: [set-variables]
     env: 
       vars: ${{ needs.set-variables.outputs.vars }}
+      project: ${{ steps.envvariables.outputs.project }}
     steps:
       - name: Checkout Common
         uses: actions/checkout@v2
