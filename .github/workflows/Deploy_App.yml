@@ -50,7 +50,7 @@ jobs:
         with:
           repository: RohitBajwaT/common
           ref: v1.0
-          path: ./../../Common
+          path: ./Common
           token: ${{ secrets.TOK }}
       - name: SonarQube Code Analysis
         run : |
@@ -66,12 +66,13 @@ jobs:
           echo "Completed the sonarqube analysis"
       - name: maven build
         run : |
-          echo $OC_SERVER
+          echo ${{ env.project_$SUB }}
           echo $SONAR_SERVER
           echo "Build completed"        
         env:
           OC_SERVER: ${{ secrets.OC_SERVER }}
           SONAR_SERVER: ${{ secrets.SONAR_SERVER }}
+          SUB: ${{ github.event.inputs.environment }}
 
   deploy:
     runs-on: ubuntu-latest
