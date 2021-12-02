@@ -105,6 +105,6 @@ jobs:
         run: |
           echo $OC_PROJECT 
           echo "Variable 1: ${{ fromJSON(env.vars).application }}"
-          echo "Deploy to ${{ github.event.inputs.environment }} completed"
+          echo "::notice::Deploy to ${{ github.event.inputs.environment }} completed"
         env:
           OC_PROJECT: ${{ secrets.OC_PROJECT }}
