@@ -84,7 +84,14 @@ jobs:
           echo "Variable 1: ${{ fromJSON(env.vars).application }}"
           echo "Variable 2: ${{ fromJSON(env.vars).environment }}" 
           echo "${{ env.project }}"
+          touch test.txt
+          echo "hello , Sonarqube report here" > test.txt
+          zip -r 2021-12-08-TibcoCLEProxy-report.zip ./test.txt
           echo "Completed the sonarqube analysis"
+      - name: upload SonarQube Report
+        uses: actions/upload-artifact@v1
+        with:
+          path: ./*report.zip
       - name: maven build
         run : |
           echo "Build completed"        
