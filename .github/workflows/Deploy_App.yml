@@ -91,6 +91,7 @@ jobs:
       - name: upload SonarQube Report
         uses: actions/upload-artifact@v1
         with:
+          name: SonarQube-Report
           path: ./*report.zip
       - name: maven build
         run : |
