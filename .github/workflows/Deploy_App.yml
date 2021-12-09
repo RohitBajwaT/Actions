@@ -92,7 +92,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: SonarQube-Report
-          path: ./*report.zip
+          path: ./2021-12-08-TibcoCLEProxy-report.zip
       - name: maven build
         run : |
           echo "Build completed"        
